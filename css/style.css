@@ -1153,7 +1153,8 @@ a.more:hover {
 }
 
 .testimonial-slider-wrap .item .testimonial-block .author-info .author-pic img {
-  max-width: 60px;
+  max-width: 80px;
+  height: auto;
   border-radius: 50%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
