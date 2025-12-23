@@ -131,7 +131,9 @@ class ShoppingCart {
     const name = productItem.querySelector('.product-title').textContent;
     const priceText = productItem.querySelector('.product-price').textContent;
     const price = parseFloat(priceText.replace('$', ''));
-    const image = productItem.querySelector('.product-thumbnail').src;
+    
+    // FIXED LINE: Using getAttribute('src') instead of .src
+    const image = productItem.querySelector('.product-thumbnail').getAttribute('src');
 
     // Check if item already exists
     const existingItem = this.items.find(item => item.name === name);
