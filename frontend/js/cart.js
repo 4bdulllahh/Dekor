@@ -72,15 +72,16 @@ class ShoppingCart {
   }
 
   attachEventListeners() {
-    // Cart icon click - open sidebar (prevent default navigation)
-    const cartIcons = document.querySelectorAll('.custom-navbar-cta a[href="cart.html"]');
-    cartIcons.forEach(icon => {
-      icon.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.openCartSidebar();
-      });
+  // Use a selector that checks if the href ENDS with cart.html
+  const cartIcons = document.querySelectorAll('.custom-navbar-cta a[href$="cart.html"]');
+  
+  cartIcons.forEach(icon => {
+    icon.addEventListener('click', (e) => {
+      e.preventDefault(); // This stops the page from changing
+      e.stopPropagation();
+      this.openCartSidebar();
     });
+  });
 
     // Close button
     const closeBtn = document.querySelector('.cart-close-btn');
