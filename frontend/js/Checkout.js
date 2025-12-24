@@ -15,42 +15,36 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initCheckout() {
-  // Load cart items from localStorage
-  const cartData = localStorage.getItem('furniCart');
+  // Ensure this matches the name in cart.js exactly
+  const cartData = localStorage.getItem('furniCart'); 
   const items = cartData ? JSON.parse(cartData) : [];
+  
+  console.log('Found these items for checkout:', items); // Check your browser console!
 
-  console.log('Checkout items:', items); // Debug log
-
-  // If cart is empty, show message
   if (items.length === 0) {
     showEmptyCartMessage();
     return;
   }
 
-  // Update the order table
   updateOrderTable(items);
-  
-  // Display checkout items at top
-  displayCheckoutItems(items);
-  
-  // Handle place order button
-  handlePlaceOrder(items);
+  handlePlaceOrder(items); // We will update this next
 }
 
 function updateOrderTable(items) {
-  const orderTableBody = document.querySelector('.site-block-order-table tbody');
+  // Target the new ID we just added to the HTML
+  const orderTableBody = document.getElementById('checkout-order-body');
   
   if (!orderTableBody) {
-    console.log('Order table not found');
+    console.log('Order table body not found!');
     return;
   }
 
-  // Clear all existing product rows
+  // 1. Wipe out any old data (like those T-shirts)
   orderTableBody.innerHTML = '';
 
   let subtotal = 0;
 
-  // Add each cart item as a row
+  // 2. Loop through your REAL cart items (Kruzo Chair, Eden Armchair, etc.)
   items.forEach(item => {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
@@ -63,21 +57,18 @@ function updateOrderTable(items) {
     orderTableBody.appendChild(row);
   });
 
-  // Add subtotal row
-  const subtotalRow = document.createElement('tr');
-  subtotalRow.innerHTML = `
-    <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-    <td class="text-black">$${subtotal.toFixed(2)}</td>
+  // 3. Add the Subtotal and Total rows at the bottom
+  const totalRows = `
+    <tr>
+      <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+      <td class="text-black">$${subtotal.toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+      <td class="text-black font-weight-bold"><strong>$${subtotal.toFixed(2)}</strong></td>
+    </tr>
   `;
-  orderTableBody.appendChild(subtotalRow);
-
-  // Add total row
-  const totalRow = document.createElement('tr');
-  totalRow.innerHTML = `
-    <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-    <td class="text-black font-weight-bold"><strong>$${subtotal.toFixed(2)}</strong></td>
-  `;
-  orderTableBody.appendChild(totalRow);
+  orderTableBody.insertAdjacentHTML('beforeend', totalRows);
 }
 
 function displayCheckoutItems(items) {
@@ -124,116 +115,42 @@ function displayCheckoutItems(items) {
   billingSection.insertBefore(itemsDisplay, billingSection.firstChild);
 }
 
-function handlePlaceOrder(items) {
-  const placeOrderBtn = document.querySelector('.btn-black.btn-lg.py-3.btn-block');
-  
-  if (!placeOrderBtn) {
-    console.log('Place order button not found');
-    return;
-  }
-
-  // Remove existing click handlers
-  const newBtn = placeOrderBtn.cloneNode(true);
-  placeOrderBtn.parentNode.replaceChild(newBtn, placeOrderBtn);
-
-  newBtn.addEventListener('click', (e) => {
-    console.log('Place order clicked');
+async function handlePlaceOrder(items) {
+    const placeOrderBtn = document.querySelector('.btn-black.btn-lg.py-3.btn-block');
     
-    if (items.length === 0) {
-      e.preventDefault();
-      alert('Your cart is empty! Please add items before checkout.');
-      window.location.href = 'shop.html';
-      return;
-    }
-    
-    // Get all required inputs
-    const firstName = document.getElementById('c_fname');
-    const lastName = document.getElementById('c_lname');
-    const address = document.getElementById('c_address');
-    const state = document.getElementById('c_state_country');
-    const zip = document.getElementById('c_postal_zip');
-    const email = document.getElementById('c_email_address');
-    const phone = document.getElementById('c_phone');
-    const country = document.getElementById('c_country');
+    placeOrderBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-    let isValid = true;
-    let errorMessage = '';
+        // 1. Collect Billing Info
+        const orderData = {
+            firstName: document.getElementById('c_fname').value,
+            lastName: document.getElementById('c_lname').value,
+            email: document.getElementById('c_email_address').value,
+            addressStreet: document.getElementById('c_address').value,
+            postalZip: document.getElementById('c_postal_zip').value,
+            phone: document.getElementById('c_phone').value,
+            // 2. Attach the items from the cart!
+            cartItems: items, 
+            totalAmount: items.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+        };
 
-    // Validate each field
-    if (!firstName || !firstName.value.trim()) {
-      isValid = false;
-      errorMessage += '- First Name\n';
-      if (firstName) firstName.style.borderColor = '#ff4444';
-    } else if (firstName) {
-      firstName.style.borderColor = '';
-    }
+        // 3. Send to Node.js Server
+        try {
+            const response = await fetch('http://localhost:3000/orders/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
 
-    if (!lastName || !lastName.value.trim()) {
-      isValid = false;
-      errorMessage += '- Last Name\n';
-      if (lastName) lastName.style.borderColor = '#ff4444';
-    } else if (lastName) {
-      lastName.style.borderColor = '';
-    }
-
-    if (!address || !address.value.trim()) {
-      isValid = false;
-      errorMessage += '- Address\n';
-      if (address) address.style.borderColor = '#ff4444';
-    } else if (address) {
-      address.style.borderColor = '';
-    }
-
-    if (!state || !state.value.trim()) {
-      isValid = false;
-      errorMessage += '- State/Country\n';
-      if (state) state.style.borderColor = '#ff4444';
-    } else if (state) {
-      state.style.borderColor = '';
-    }
-
-    if (!zip || !zip.value.trim()) {
-      isValid = false;
-      errorMessage += '- Postal/Zip Code\n';
-      if (zip) zip.style.borderColor = '#ff4444';
-    } else if (zip) {
-      zip.style.borderColor = '';
-    }
-
-    if (!email || !email.value.trim()) {
-      isValid = false;
-      errorMessage += '- Email Address\n';
-      if (email) email.style.borderColor = '#ff4444';
-    } else if (email) {
-      email.style.borderColor = '';
-    }
-
-    if (!phone || !phone.value.trim()) {
-      isValid = false;
-      errorMessage += '- Phone Number\n';
-      if (phone) phone.style.borderColor = '#ff4444';
-    } else if (phone) {
-      phone.style.borderColor = '';
-    }
-
-    if (!country || country.value === '1') {
-      isValid = false;
-      errorMessage += '- Country\n';
-      if (country) country.style.borderColor = '#ff4444';
-    } else if (country) {
-      country.style.borderColor = '';
-    }
-
-    if (!isValid) {
-      e.preventDefault();
-      alert('Please fill in all required fields:\n\n' + errorMessage);
-      return;
-    }
-
-    // If valid, clear cart and proceed to thank you page
-    localStorage.removeItem('furniCart');
-    // Let the onclick handler proceed to thankyou.html
-  });
+            if (response.ok) {
+                localStorage.removeItem('furniCart'); // Clear cart on success
+                alert("Order Placed Successfully!");
+                window.location.href = 'thankyou.html';
+            }
+        } catch (err) {
+            alert("Checkout failed. Is your server running?");
+        }
+    });
 }
 
 function showEmptyCartMessage() {
