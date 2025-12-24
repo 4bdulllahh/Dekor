@@ -15,50 +15,55 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initCheckout() {
-  // Ensure this matches the name in cart.js exactly
-  const cartData = localStorage.getItem('furniCart'); 
+  // Pull data from the same key used in cart.js
+  const cartData = localStorage.getItem('furniCart');
   const items = cartData ? JSON.parse(cartData) : [];
   
-  console.log('Found these items for checkout:', items); // Check your browser console!
+  console.log('Checkout data detected:', items); 
 
   if (items.length === 0) {
     showEmptyCartMessage();
     return;
   }
 
+  // Pass items directly to the table and order handler
   updateOrderTable(items);
-  handlePlaceOrder(items); // We will update this next
+  displayCheckoutItems(items);
+  handlePlaceOrder(items);
 }
 
 function updateOrderTable(items) {
-  // Target the new ID we just added to the HTML
   const orderTableBody = document.getElementById('checkout-order-body');
   
   if (!orderTableBody) {
-    console.log('Order table body not found!');
+    // If the ID isn't found, try the fallback class name
+    const fallback = document.querySelector('.site-block-order-table tbody');
+    if (fallback) {
+       console.log('Using fallback selector');
+       renderRows(fallback, items);
+    }
     return;
   }
 
-  // 1. Wipe out any old data (like those T-shirts)
-  orderTableBody.innerHTML = '';
+  renderRows(orderTableBody, items);
+}
 
+function renderRows(container, items) {
+  container.innerHTML = ''; // Wipe T-shirts
   let subtotal = 0;
 
-  // 2. Loop through your REAL cart items (Kruzo Chair, Eden Armchair, etc.)
   items.forEach(item => {
     const itemTotal = item.price * item.quantity;
     subtotal += itemTotal;
-
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${item.name} <strong class="mx-2">x</strong> ${item.quantity}</td>
       <td>$${itemTotal.toFixed(2)}</td>
     `;
-    orderTableBody.appendChild(row);
+    container.appendChild(row);
   });
 
-  // 3. Add the Subtotal and Total rows at the bottom
-  const totalRows = `
+  const totals = `
     <tr>
       <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
       <td class="text-black">$${subtotal.toFixed(2)}</td>
@@ -68,7 +73,7 @@ function updateOrderTable(items) {
       <td class="text-black font-weight-bold"><strong>$${subtotal.toFixed(2)}</strong></td>
     </tr>
   `;
-  orderTableBody.insertAdjacentHTML('beforeend', totalRows);
+  container.insertAdjacentHTML('beforeend', totals);
 }
 
 function displayCheckoutItems(items) {
