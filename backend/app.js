@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // 1. Added CORS
+const cors = require('cors');
+const authRoutes = require('./routes/auth'); // 1. Added CORS
 
 const app = express();
 const port = 3000;
@@ -10,6 +11,7 @@ const port = 3000;
 // Middleware
 app.use(cors()); // 2. Enable CORS for your frontend
 app.use(bodyParser.json());
+app.use('/auth', authRoutes); // 3. Auth routes
 
 // MongoDB connection
 const atlasUri = "mongodb+srv://abdullahbsu823_db_user:vxBxxNzCSFn4ATie@cluster0.i9d8ejy.mongodb.net/K-Sports?retryWrites=true&w=majority"; 
