@@ -191,3 +191,57 @@ function showEmptyCartMessage() {
     }
   }
 }
+
+async function handlePlaceOrder(items) {
+    const placeOrderBtn = document.querySelector('.btn-black.btn-lg.py-3.btn-block');
+    
+    placeOrderBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        // 1. Gather Customer Data using the IDs from your HTML
+        const orderData = {
+            firstName: document.getElementById('c_fname').value,
+            lastName: document.getElementById('c_lname').value,
+            country: document.getElementById('c_country').value,
+            addressStreet: document.getElementById('c_address').value,
+            apartment: document.getElementById('c_apartment').value,
+            state: document.getElementById('c_state_country').value,
+            postalZip: document.getElementById('c_postal_zip').value,
+            email: document.getElementById('c_email_address').value,
+            phone: document.getElementById('c_phone').value,
+            companyName: document.getElementById('c_companyname').value,
+            orderNote: document.getElementById('c_order_notes').value,
+            // 2. Attach the Cart Data
+            cartItems: items, 
+            totalAmount: items.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+        };
+
+        // 3. Validation: Ensure required fields are filled
+        if (!orderData.firstName || !orderData.email || !orderData.addressStreet) {
+            alert("Please fill in all required fields marked with *");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/orders/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert("Order placed! Your Order ID is: " + result.orderId);
+                localStorage.removeItem('furniCart'); // Clear the cart
+                window.location.href = 'thankyou.html'; // Go to thank you page
+            } else {
+                const error = await response.json();
+                alert("Order failed: " + error.error);
+            }
+        } catch (err) {
+            console.error("Order Error:", err);
+            alert("Could not connect to the server.");
+        }
+    });
+}
+ 
