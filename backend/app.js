@@ -36,3 +36,12 @@ app.use('/contact', contactRoutes);       // http://localhost:3000/contact/send
 app.listen(port, () => {
     console.log(`🚀 Server running on http://localhost:${port}`);
 });
+
+app.post('/admin/verify', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.ADMIN_PASSWORD) {
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ success: false, message: "Invalid Password" });
+    }
+});
