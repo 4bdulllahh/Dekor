@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const Newsletter = require('../models/Newsletter');
+const Newsletter = require('../models/Newsletter'); // Make sure this path is correct
 
+// This handles the POST request you just wrote in script.js
 router.post('/subscribe', async (req, res) => {
     try {
-        const entry = new Newsletter(req.body);
-        await entry.save();
-        res.status(201).json({ message: "Subscribed successfully!" });
+        const { name, email } = req.body;
+        
+        // Save to the collection in Atlas
+        const newSubscriber = new Newsletter({ name, email });
+        await newSubscriber.save();
+        
+        res.status(201).json({ message: "Thanks for subscribing!" });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 

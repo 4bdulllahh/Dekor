@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const NewsletterSchema = new mongoose.Schema({
+const newsletterSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
-    signedUpAt: { type: Date, default: Date.now }
+    subscribedAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Newsletter', NewsletterSchema);
+// This will save to a collection named 'newsletters' in your K-Sports database
+module.exports = mongoose.model('Newsletter', newsletterSchema);

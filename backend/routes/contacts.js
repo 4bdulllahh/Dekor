@@ -1,14 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact');
+const Contact = require('../models/Contact'); // Ensure this matches your model file
 
+// This handles: http://localhost:3000/contact/send
 router.post('/send', async (req, res) => {
     try {
-        const newMessage = new Contact(req.body);
-        await newMessage.save();
-        res.status(201).json({ message: "Message sent!" });
+        const { firstName, lastName, email, message } = req.body;
+        
+        const newContact = new Contact({
+            firstName,
+            lastName,
+            email,
+            message
+        });
+
+        await newContact.save();
+        res.status(201).json({ message: "We received your message!" });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 
