@@ -20,3 +20,15 @@ router.post('/checkout', async (req, res) => {
 });
 
 module.exports = router;
+
+// ADD THIS: Get all messages
+router.get('/all', async (req, res) => {
+    const contacts = await Contact.find().sort({ sentAt: -1 });
+    res.json(contacts);
+});
+
+// ADD THIS: Delete a message
+router.delete('/delete/:id', async (req, res) => {
+    await Contact.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted" });
+});
