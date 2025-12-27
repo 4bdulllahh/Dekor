@@ -2,33 +2,38 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-// This handles: POST http://localhost:3000/orders/checkout
+// 1. Place Order: POST http://localhost:3000/orders/checkout
 router.post('/checkout', async (req, res) => {
     try {
-        // req.body will contain all the fields sent from your checkout form
         const newOrder = new Order(req.body);
-        
         const savedOrder = await newOrder.save();
         res.status(201).json({
-            message: "Order data stored in MongoDB successfully!",
+            message: "Order data stored successfully!",
             orderId: savedOrder._id
         });
     } catch (err) {
-        // If a required field (like email) is missing, this sends the error back
         res.status(400).json({ error: err.message });
     }
 });
 
-module.exports = router;
-
-// ADD THIS: Get all messages
+// 2. Get All Orders: GET http://localhost:3000/orders/all
 router.get('/all', async (req, res) => {
-    const contacts = await Contact.find().sort({ sentAt: -1 });
-    res.json(contacts);
+    try {
+        const orders = await Order.find().sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-// ADD THIS: Delete a message
+// 3. Delete Order: DELETE http://localhost:3000/orders/delete/:id
 router.delete('/delete/:id', async (req, res) => {
-    await Contact.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
+    try {
+        await Order.findByIdAndDelete(req.params.id);
+        res.json({ message: "Order deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
+
+module.exports = router; 

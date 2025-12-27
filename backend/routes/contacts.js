@@ -1,36 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact'); // Ensure this matches your model file
+const Contact = require('../models/Contact');
 
-// This handles: http://localhost:3000/contact/send
+// Send Message
 router.post('/send', async (req, res) => {
     try {
-        const { firstName, lastName, email, message } = req.body;
-        
-        const newContact = new Contact({
-            firstName,
-            lastName,
-            email,
-            message
-        });
-
+        const newContact = new Contact(req.body);
         await newContact.save();
-        res.status(201).json({ message: "We received your message!" });
+        res.status(201).json({ message: "Message sent!" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-module.exports = router;
-
-// ADD THIS: Get all messages
+// Get All (For Admin)
 router.get('/all', async (req, res) => {
     const contacts = await Contact.find().sort({ sentAt: -1 });
     res.json(contacts);
 });
 
-// ADD THIS: Delete a message
+// Delete (For Admin)
 router.delete('/delete/:id', async (req, res) => {
     await Contact.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted" });
 });
+
+module.exports = router;
