@@ -8,7 +8,7 @@ async function loadData(type) {
     container.innerHTML = `<div class="text-center p-5"><div class="spinner-border"></div><p>Fetching ${type}...</p></div>`;
 
     try {
-        // We use the routes you already have in app.js
+        //using the routes i already have in app.js
         const response = await fetch(`http://localhost:3000/${type}/all`);
         const data = await response.json();
 
@@ -57,6 +57,8 @@ function getHeaders(type) {
     return '';
 }
 
+// Generate table row data based on type
+
 function getRowData(type, item) {
     if (type === 'orders') return `<td>${item.firstName} ${item.lastName}</td><td>${item.email}</td><td>$${item.totalAmount}</td><td>${new Date(item.createdAt).toLocaleDateString()}</td>`;
     if (type === 'contact') return `<td>${item.firstName}</td><td>${item.email}</td><td>${item.message}</td>`;
@@ -64,6 +66,8 @@ function getRowData(type, item) {
     if (type === 'auth') return `<td>${item.fullName}</td><td>${item.email}</td>`;
     return '';
 }
+
+// Logout function
 
 async function deleteItem(type, id) {
     if (confirm("Delete this entry forever?")) {

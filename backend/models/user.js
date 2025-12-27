@@ -7,5 +7,6 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-// Ensure this name matches what you use in your routes
+// This will save to a collection named 'users' in database
+
 module.exports = mongoose.model('User', userSchema);

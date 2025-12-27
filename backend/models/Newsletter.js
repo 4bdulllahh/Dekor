@@ -6,5 +6,5 @@ const newsletterSchema = new mongoose.Schema({
     subscribedAt: { type: Date, default: Date.now }
 });
 
-// This will save to a collection named 'newsletters' in your K-Sports database
+// This will save to a collection named 'newsletters' in database
 module.exports = mongoose.model('Newsletter', newsletterSchema);

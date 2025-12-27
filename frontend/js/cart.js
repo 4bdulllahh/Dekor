@@ -72,7 +72,7 @@ class ShoppingCart {
   }
 
   attachEventListeners() {
-  // Use a selector that checks if the href ENDS with cart.html
+  // Use a selector that checks if the href ends with cart.html
   const cartIcons = document.querySelectorAll('.custom-navbar-cta a[href$="cart.html"]');
   
   cartIcons.forEach(icon => {
@@ -133,7 +133,7 @@ class ShoppingCart {
     const priceText = productItem.querySelector('.product-price').textContent;
     const price = parseFloat(priceText.replace('$', ''));
     
-    // FIXED LINE: Using getAttribute('src') instead of .src
+    // getAttribute('src') instead of .src
     const image = productItem.querySelector('.product-thumbnail').getAttribute('src');
 
     // Check if item already exists
@@ -156,7 +156,7 @@ class ShoppingCart {
     this.showNotification();
     this.openCartSidebar();
     
-    // Auto-close after 3 seconds
+    // sidecart Auto-close after 3 seconds
     setTimeout(() => {
       this.closeCartSidebar();
     }, 3000);
@@ -168,6 +168,7 @@ class ShoppingCart {
     this.updateCartUI();
     this.updateCartBadge();
   }
+  
 
   updateQuantity(index, change) {
     if (this.items[index]) {
@@ -183,6 +184,7 @@ class ShoppingCart {
     }
   }
 
+  // Update cart UI
   updateCartUI() {
     const itemsContainer = document.querySelector('.cart-sidebar-items');
     const emptyMessage = itemsContainer.querySelector('.cart-empty-message');

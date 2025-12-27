@@ -8,4 +8,6 @@ const contactSchema = new mongoose.Schema({
     sentAt: { type: Date, default: Date.now }
 });
 
+// This will save to a collection named 'contacts' in database
+
 module.exports = mongoose.model('Contact', contactSchema);

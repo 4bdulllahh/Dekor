@@ -17,4 +17,6 @@ const OrderSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+// This will save to a collection named 'orders' in database
+
 module.exports = mongoose.model('Order', OrderSchema);

@@ -34,7 +34,7 @@ app.use('/newsletter', newsletterRoutes); // http://localhost:3000/newsletter/su
 app.use('/contact', contactRoutes);       // http://localhost:3000/contact/send
 
 app.listen(port, () => {
-    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
 
 app.post('/admin/verify', (req, res) => {

@@ -1,4 +1,4 @@
-// ==================== AUTH SYSTEM INITIALIZATION ====================
+// auth system for login and signup forms
 document.addEventListener('DOMContentLoaded', function() {
     initAuthForms();
     checkAuthStatus();
@@ -12,7 +12,7 @@ function initAuthForms() {
     if (signupForm) signupForm.addEventListener('submit', handleSignup);
 }
 
-// ==================== LOGIN HANDLER (THE MISSING FUNCTION) ====================
+// lognin handler
 async function handleLogin(e) {
     e.preventDefault();
     
@@ -52,7 +52,7 @@ async function handleLogin(e) {
     }
 }
 
-// ==================== SIGNUP HANDLER ====================
+// signup handler
 async function handleSignup(e) {
     e.preventDefault();
     
@@ -88,7 +88,7 @@ async function handleSignup(e) {
     }
 }
 
-// ==================== UI HELPER FUNCTIONS ====================
+// UI helpers for auth forms
 function switchToSignup() {
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('signupForm').style.display = 'block';

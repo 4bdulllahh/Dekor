@@ -49,7 +49,7 @@ function updateOrderTable(items) {
 }
 
 function renderRows(container, items) {
-  container.innerHTML = ''; // Wipe T-shirts
+  container.innerHTML = ''; // Wipe any existing rows
   let subtotal = 0;
 
   items.forEach(item => {
@@ -154,14 +154,14 @@ async function handlePlaceOrder(items) {
             });
 
             if (response.ok) {
-                // SUCCESS: Clear cart and go to thank you page
+                // Clear cart and go to thank you page
                 localStorage.removeItem('furniCart');
                 window.location.href = 'thankyou.html'; 
             } else {
                 alert("Server error. Could not save order.");
             }
         } catch (err) {
-            // If server is not running, we can still redirect for testing
+            // If server is not running can still redirect for testing
             console.log("Server not found, but redirecting anyway...");
             window.location.href = 'thankyou.html';
         }
