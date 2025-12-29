@@ -43,39 +43,7 @@ async function handleContact(event) {
     }
 }
 
-// 3. Full Checkout Form Function
-async function handleCheckout(event) {
-    event.preventDefault();
 
-    // Make sure these IDs match your HTML input IDs exactly!
-    const formData = {
-        firstName: document.getElementById('fName').value,
-        lastName: document.getElementById('lName').value,
-        country: document.getElementById('country').value,
-        companyName: document.getElementById('company').value, // Optional
-        addressStreet: document.getElementById('street').value,
-        apartment: document.getElementById('apartment').value, // Optional
-        state: document.getElementById('state').value,
-        postalZip: { type: String, required: true },
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        orderNote: document.getElementById('note').value      // Optional
-    };
-
-    const response = await fetch('https://dekor-kwrk.onrender.com/orders/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-    });
-
-    if (response.ok) {
-        const result = await response.json();
-        alert("Order placed successfully! Order ID: " + result.orderId);
-        window.location.href = "thank-you.html"; // Optional redirect
-    } else {
-        alert("Something went wrong with the checkout.");
-    }
-}
 
 async function handleNewsletterSubscription(event) {
     event.preventDefault();

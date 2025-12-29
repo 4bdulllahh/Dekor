@@ -9,7 +9,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors()); // 2. Enable CORS for your frontend
+app.use(cors({
+    origin: ['https://your-vercel-domain.vercel.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+})); // 2. Enable CORS for your frontend
 app.use(bodyParser.json());
 app.use('/auth', authRoutes); // 3. Auth routes
 
