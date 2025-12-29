@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use('/auth', authRoutes); // 3. Auth routes
 
 // MongoDB connection
-const atlasUri = process.env.MONGODB_URI;
+const atlasUri = process.env.MONGO_URI;
 // Added "K-Sports" to the URI above so your data goes into a specific database name
 
 mongoose.connect(atlasUri)
@@ -42,7 +42,7 @@ app.post('/admin/verify', (req, res) => {
     }
 });
 
-app.listen(port, () => {
+app.listen(port, () => {    
     console.log(`Server running on http://localhost:${port}`);
 });
 
