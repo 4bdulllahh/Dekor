@@ -9,7 +9,7 @@ async function loadData(type) {
 
     try {
         //using the routes i already have in app.js
-        const response = await fetch(`http://localhost:3000/${type}/all`);
+        const response = await fetch(`https://dekor-kwrk.onrender.com/${type}/all`);
         const data = await response.json();
 
         if (data.length === 0) {
@@ -72,7 +72,7 @@ function getRowData(type, item) {
 async function deleteItem(type, id) {
     if (confirm("Delete this entry forever?")) {
         try {
-            const response = await fetch(`http://localhost:3000/${type}/delete/${id}`, { method: 'DELETE' });
+            const response = await fetch(`https://dekor-kwrk.onrender.com/${type}/delete/${id}`, { method: 'DELETE' });
             if (response.ok) {
                 loadData(type); // Refresh
             }
