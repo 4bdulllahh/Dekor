@@ -6,7 +6,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth'); // 1. Added CORS
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors()); // 2. Enable CORS for your frontend
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use('/auth', authRoutes); // 3. Auth routes
 
 // MongoDB connection
-const atlasUri = "mongodb+srv://abdullahbsu823_db_user:vxBxxNzCSFn4ATie@cluster0.i9d8ejy.mongodb.net/K-Sports?retryWrites=true&w=majority"; 
+const atlasUri = process.env.MONGODB_URI;
 // Added "K-Sports" to the URI above so your data goes into a specific database name
 
 mongoose.connect(atlasUri)
@@ -33,10 +33,6 @@ app.use('/orders', orderRoutes);         // http://localhost:3000/orders/checkou
 app.use('/newsletter', newsletterRoutes); // http://localhost:3000/newsletter/subscribe
 app.use('/contact', contactRoutes);       // http://localhost:3000/contact/send
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
-
 app.post('/admin/verify', (req, res) => {
     const { password } = req.body;
     if (password === process.env.ADMIN_PASSWORD) {
@@ -45,3 +41,9 @@ app.post('/admin/verify', (req, res) => {
         res.status(401).json({ success: false, message: "Invalid Password" });
     }
 });
+
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+});
+
+
