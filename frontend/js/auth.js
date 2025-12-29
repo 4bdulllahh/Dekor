@@ -24,7 +24,7 @@ async function handleLogin(e) {
     removeAlerts();
 
     try {
-        const response = await fetch('http://localhost:3000/auth/login', {
+        const response = await fetch('https://dekor-kwrk.onrender.com/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -70,7 +70,7 @@ async function handleSignup(e) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/auth/signup', {
+        const response = await fetch('https://dekor-kwrk.onrender.com/auth/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fullName: name, email, password })

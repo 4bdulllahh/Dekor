@@ -8,7 +8,7 @@ async function handleNewsletter(event) {
     };
 
     // Updated URL to match your app.js (removed /api)
-    const response = await fetch('http://localhost:3000/newsletter/subscribe', {
+    const response = await fetch('https://dekor-kwrk.onrender.com/newsletter/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -31,7 +31,7 @@ async function handleContact(event) {
         message: document.getElementById('contact-message').value
     };
 
-    const response = await fetch('http://localhost:3000/contact/send', {
+    const response = await fetch('https://dekor-kwrk.onrender.com/contact/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -62,7 +62,7 @@ async function handleCheckout(event) {
         orderNote: document.getElementById('note').value      // Optional
     };
 
-    const response = await fetch('http://localhost:3000/orders/checkout', {
+    const response = await fetch('https://dekor-kwrk.onrender.com/orders/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -85,7 +85,7 @@ async function handleNewsletterSubscription(event) {
     const email = event.target.querySelector('input[placeholder*="email"]').value;
 
     try {
-        const response = await fetch('http://localhost:3000/newsletter/subscribe', {
+        const response = await fetch('https://dekor-kwrk.onrender.com/newsletter/subscribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email })
@@ -124,7 +124,7 @@ async function handleContactSubmit(event) {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/contact/send', {
+        const response = await fetch('https://dekor-kwrk.onrender.com/contact/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(contactData)

@@ -147,7 +147,7 @@ async function handlePlaceOrder(items) {
 
         // 3. Send to Server
         try {
-            const response = await fetch('http://localhost:3000/orders/checkout', {
+            const response = await fetch('https://dekor-kwrk.onrender.com/orders/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
@@ -223,7 +223,7 @@ async function handlePlaceOrder(items) {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/orders/checkout', {
+            const response = await fetch('https://dekor-kwrk.onrender.com/orders/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
