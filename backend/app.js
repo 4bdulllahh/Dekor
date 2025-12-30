@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
+// Enable CORS for your specific Vercel domain
 app.use(cors({
     origin: ['https://dekorfurniture.vercel.app', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
