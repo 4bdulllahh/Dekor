@@ -28,31 +28,32 @@
 
     <script>
         async function checkAdmin() {
-            const pass = document.getElementById('adminPass').value;
-            
-            try {
-                // 1. Send the password to your backend for verification
-                const response = await fetch('http://localhost:3000/auth/admin/verify', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: pass })
-                });
+    const passField = document.getElementById('adminPass'); // Matches your HTML ID
+    if (!passField) return;
 
-                const data = await response.json();
+    const pass = passField.value;
+    
+    try {
+        // Updated to use your LIVE Render URL and correct path
+        const response = await fetch('https://dekor-kwrk.onrender.com/admin/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pass })
+        });
 
-                if (response.ok && data.success) {
-                    // 2. If correct, save admin status in the browser session
-                    sessionStorage.setItem('isAdmin', 'true');
-                    // 3. Redirect to the dashboard in the same folder
-                    window.location.href = 'admin-dashboard.html';
-                } else {
-                    alert(data.message || "Access Denied");
-                }
-            } catch (err) {
-                console.error("Admin Login Error:", err);
-                alert("Could not connect to the server.");
-            }
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            sessionStorage.setItem('isAdmin', 'true');
+            window.location.href = 'admin-dashboard.html';
+        } else {
+            alert(data.message || "Access Denied");
         }
+    } catch (err) {
+        console.error("Admin Login Error:", err);
+        alert("Could not connect to the live server. Wake it up by visiting the Render URL once.");
+    }
+}
     </script> 
 </body>
 </html>
