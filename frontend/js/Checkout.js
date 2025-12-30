@@ -84,8 +84,10 @@ function displayCheckoutItems(items) {
 
     items.forEach(item => {
 
-        const checkoutImage = item.image.startsWith('../') ? item.image : '../' + item.image.replace('./', '');
-        
+        const checkoutImage = item.image.startsWith('../') 
+    ? item.image 
+    : '../' + item.image.replace('./', '');
+
         itemsHTML += `
             <div class="checkout-item d-flex align-items-center mb-2 p-2 border rounded bg-light">
                 <div class="checkout-item-image me-3">
