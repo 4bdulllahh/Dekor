@@ -91,7 +91,7 @@ function displayCheckoutItems(items) {
         itemsHTML += `
             <div class="checkout-item d-flex align-items-center mb-2 p-2 border rounded bg-light">
                 <div class="checkout-item-image me-3">
-                    <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover;">
+                    <img src="${checkoutImage}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover;">
                 </div>
                 <div class="checkout-item-info">
                     <h6 class="mb-0">${item.name}</h6>
