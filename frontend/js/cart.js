@@ -128,18 +128,17 @@ class ShoppingCart {
     }
   }
 
-  addToCart(productItem) {
+addToCart(productItem) {
     const name = productItem.querySelector('.product-title').textContent;
     const priceText = productItem.querySelector('.product-price').textContent;
     const price = parseFloat(priceText.replace('$', ''));
     
+    // Get the raw src (e.g., "../images/product-1.png" or "images/product-1.png")
     let image = productItem.querySelector('.product-thumbnail').getAttribute('src');
 
-    // FIX: Normalize image paths for Vercel/Live environment
+    // This ensures that whether you are in /pages/shop.html or /index.html, it finds the folder.
     if (image.startsWith('../')) {
         image = image.replace('../', './');
-    } else if (!image.startsWith('./') && !image.startsWith('http')) {
-        image = './' + image;
     }
 
     const existingItem = this.items.find(item => item.name === name);
@@ -227,6 +226,9 @@ class ShoppingCart {
       const itemTotal = item.price * item.quantity;
       total += itemTotal;
       totalItems += item.quantity;
+
+      const isSubPage = window.location.pathname.includes('/pages/');
+      const displayImage = (isSubPage && !item.image.includes('../')) ? '../' + item.image.replace('./', '') : item.image;
 
       const cartItem = document.createElement('div');
       cartItem.className = 'cart-item';
