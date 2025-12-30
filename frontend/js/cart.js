@@ -224,17 +224,25 @@ addToCart(productItem) {
 
     this.items.forEach((item, index) => {
       const itemTotal = item.price * item.quantity;
-      total += itemTotal;
-      totalItems += item.quantity;
+  total += itemTotal;
+  totalItems += item.quantity;
 
-      const isSubPage = window.location.pathname.includes('/pages/');
-      const displayImage = (isSubPage && !item.image.includes('../')) ? '../' + item.image.replace('./', '') : item.image;
+  // FIX: Determine the correct path based on the current page location
+  const isSubPage = window.location.pathname.includes('/pages/');
+  let displayImage = item.image;
 
+  if (isSubPage) {
+    // If on a sub-page, ensure path starts with ../ to go to root
+    displayImage = item.image.startsWith('../') ? item.image : '../' + item.image.replace('./', '');
+  } else {
+    // If on root (index.html), ensure path starts with ./
+    displayImage = item.image.startsWith('./') ? item.image : './' + item.image.replace('../', '');
+  }
       const cartItem = document.createElement('div');
       cartItem.className = 'cart-item';
       cartItem.innerHTML = `
         <div class="cart-item-image">
-          <img src="${item.image}" alt="${item.name}">
+          <img src="${displayImage}" alt="${item.name}">
         </div>
         <div class="cart-item-details">
           <h4 class="cart-item-name">${item.name}</h4>
